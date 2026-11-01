@@ -1,0 +1,57 @@
+{
+  "name": "bb-plugin-notion-theme",
+  "version": "0.1.0",
+  "description": "Notion's page colours and type for BB, in light and dark, with Default, Serif and Mono for messages.",
+  "license": "MIT",
+  "author": "Max Kosach (https://github.com/KosachMax)",
+  "homepage": "https://github.com/KosachMax/bb-plugin-notion-theme#readme",
+  "bugs": {
+    "url": "https://github.com/KosachMax/bb-plugin-notion-theme/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KosachMax/bb-plugin-notion-theme.git"
+  },
+  "type": "module",
+  "engines": {
+    "bb": ">=0.47",
+    "bbPluginSdk": ">=0.6.79"
+  },
+  "bb": {
+    "name": "Notion Theme",
+    "description": "Notion's page colours and type for BB, in light and dark, with Default, Serif and Mono for messages.",
+    "branding": {
+      "icon": "Palette"
+    },
+    "server": "./server.ts",
+    "skills": [
+      "skills"
+    ],
+    "themes": [
+      {
+        "id": "notion",
+        "name": "Notion",
+        "description": "Notion colours and fonts, light and dark",
+        "css": "./themes/notion.css"
+      }
+    ],
+    "app": "./app.tsx"
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@get-bb/plugin-sdk": "0.6.79",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "^19.0.0",
+    "better-sqlite3": "^12.0.0",
+    "hono": "^4.11.9"
+  },
+  "scripts": {
+    "build": "bb plugin build",
+    "typecheck": "tsc --noEmit"
+  }
+}

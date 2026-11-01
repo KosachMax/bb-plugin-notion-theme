@@ -1,0 +1,486 @@
+/* Notion palette for bb. Light: Notion's white page and warm grey text.
+   Dark: Notion's #191919 page. Fonts follow Notion's "Default" style. */
+:root,
+.light {
+  --canvas: #ffffff;
+  --ink: #37352f;
+  --sidebar: #f7f7f5;
+  --primary: #2383e2;
+  --primary-foreground: #ffffff;
+
+  --muted-foreground: color-mix(in oklch, var(--ink) 65%, var(--canvas));
+  --subtle-foreground: color-mix(in oklch, var(--ink) 50%, var(--canvas));
+  --readback-foreground: color-mix(in oklch, var(--ink) 58%, var(--canvas));
+
+  --destructive: #e03e3e;
+  --destructive-foreground: #ffffff;
+  --destructive-text: #c4342f;
+  --warning: #d9730d;
+  --warning-text: #b2600b;
+  --attention: #dfab01;
+  --success: #0f7b6c;
+  --diff-added: #0f7b6c;
+  --diff-removed: #e03e3e;
+  --pr-merged: #9065b0;
+  --file-accent: #eb5757;
+
+  --radius: 0.375rem;
+
+  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif;
+  --font-serif: "Lyon-Text", Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --font-mono: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
+  --font-terminal: "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+.dark {
+  --canvas: #191919;
+  --ink: #d4d4d4;
+  --sidebar: #202020;
+  --primary: #2383e2;
+  --primary-foreground: #ffffff;
+
+  --destructive: #df5452;
+  --destructive-foreground: #ffffff;
+  --destructive-text: #ff7369;
+  --warning: #d9730d;
+  --warning-text: #ffa344;
+  --attention: #ffdc49;
+  --success: #4dab9a;
+  --diff-added: #4dab9a;
+  --diff-removed: #df5452;
+  --pr-merged: #9a6dd7;
+  --file-accent: #ff7369;
+}
+
+/* ---------- Notion shapes on top of bb's layout ----------
+   Hooks into stable data-* attributes and Radix parts only. */
+:root, .light {
+  --notion-shadow: rgba(15,15,15,.05) 0 0 0 1px, rgba(15,15,15,.1) 0 3px 6px, rgba(15,15,15,.2) 0 9px 24px;
+  --notion-bubble: #f1f1ef;
+  --notion-code-bg: rgba(135,131,120,.15);
+  --notion-code-fg: #eb5757;
+  --notion-switch-off: rgba(135,131,120,.3);
+}
+.dark {
+  --notion-shadow: rgba(255,255,255,.094) 0 0 0 1px, rgba(0,0,0,.3) 0 5px 10px, rgba(0,0,0,.4) 0 15px 40px;
+  --notion-bubble: #2f2f2f;
+  --notion-code-bg: rgba(135,131,120,.15);
+  --notion-code-fg: #ff7369;
+  --notion-switch-off: rgba(202,204,206,.3);
+}
+
+/* Menus, popovers, select lists: light border, soft shadow, roomy rows */
+[data-radix-menu-content],
+[data-radix-select-content],
+[data-radix-popper-content-wrapper] > [role="listbox"] {
+  border: 1px solid var(--border-hairline) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(15,15,15,.08), 0 1px 3px rgba(15,15,15,.06) !important;
+  padding: 6px !important;
+  min-width: 220px;
+}
+.dark :is([data-radix-menu-content], [data-radix-select-content], [data-radix-popper-content-wrapper] > [role="listbox"]) {
+  box-shadow: 0 4px 16px rgba(0,0,0,.4), 0 1px 3px rgba(0,0,0,.3) !important;
+}
+[data-radix-popper-content-wrapper] > [role="dialog"] {
+  border-radius: 12px !important;
+  box-shadow: var(--notion-shadow) !important;
+}
+:is([data-radix-menu-content], [data-radix-select-content]) :is([role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"]) {
+  border-radius: 8px;
+  font-size: 15px;
+  min-height: 34px;
+  padding-inline: 10px;
+  gap: 10px;
+}
+:is([data-radix-menu-content], [data-radix-select-content]) :is([role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"]) svg {
+  width: 18px; height: 18px;
+}
+:is([data-radix-menu-content], [data-radix-select-content]) :is([role="menuitem"], [role="option"])[data-highlighted] {
+  background: var(--state-hover);
+}
+[data-radix-menu-content] [role="separator"] { background: var(--border-hairline); margin: 6px 10px; }
+
+/* Modal dialogs */
+[role="dialog"][data-state="open"]:not([data-radix-popper-content-wrapper] *) {
+  border-radius: 12px;
+  box-shadow: var(--notion-shadow);
+}
+
+/* Switches: grey when off, like Notion */
+button[role="switch"][data-state="unchecked"] { background: var(--notion-switch-off) !important; }
+button[role="switch"][data-state="checked"] { background: var(--primary) !important; }
+
+/* Chat: your messages on Notion grey, no border */
+[data-message-column] .ml-auto .rounded-xl.bg-surface-recessed {
+  background: var(--notion-bubble);
+  border-color: transparent;
+  border-radius: 8px;
+}
+
+/* Markdown in messages: Notion inline code, quotes, headings, tables */
+[data-markdown-preview] :not(pre) > code {
+  color: var(--notion-code-fg);
+  background: var(--notion-code-bg);
+  border-radius: 4px;
+  padding: 0.2em 0.4em;
+  font-size: 85%;
+}
+[data-markdown-preview] blockquote { border-left: 3px solid currentColor; padding-left: 14px; }
+[data-markdown-preview] :is(h1, h2, h3) { font-weight: 600; letter-spacing: -0.01em; }
+[data-markdown-preview] table { border-collapse: collapse; }
+[data-markdown-preview] :is(th, td) { border: 1px solid var(--border); }
+[data-markdown-preview] th { color: var(--muted-foreground); font-weight: 500; }
+
+/* Content font picked on the plugin settings page (Default / Serif / Mono) */
+[data-notion-font="serif"] :is([data-markdown-preview], [data-promptbox-editor-content]) {
+  font-family: var(--font-serif);
+}
+[data-notion-font="mono"] :is([data-markdown-preview], [data-promptbox-editor-content]) {
+  font-family: var(--font-mono);
+}
+
+/* ---------- Settings pages, Notion style ---------- */
+/* No boxed cards: rows sit on the page, split by hairlines */
+section[data-settings-anchor] :is(.rounded-xl, .rounded-lg).border:has([data-control-placement]) {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding-inline: 0 !important;
+}
+section[data-settings-anchor] [data-control-placement] {
+  padding-block: 12px;
+  border-bottom: 1px solid var(--border-hairline);
+}
+section[data-settings-anchor] [data-control-placement] p.text-sm { font-size: 14px; }
+/* Section titles: Notion's 16px heading with a rule under it */
+section[data-settings-anchor] h2 { font-size: 16px; font-weight: 600; }
+section[data-settings-anchor] > :first-child:has(h2) {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-hairline);
+}
+/* Dropdowns: plain text + chevron, grey on hover */
+section[data-settings-anchor] [data-control-placement] button[data-state]:not([role="switch"]) {
+  border-color: transparent !important;
+  background: transparent !important;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  font-weight: 400;
+}
+section[data-settings-anchor] [data-control-placement] button[data-state]:not([role="switch"]):hover {
+  background: var(--state-hover) !important;
+  color: var(--foreground);
+}
+/* Settings nav: 14px rows, soft active fill */
+[data-testid="settings-sidebar-body"] a {
+  font-size: 14px;
+  border-radius: 6px;
+}
+[data-testid="settings-sidebar-body"] a[aria-current="page"] {
+  background: var(--state-active);
+  font-weight: 500;
+}
+
+/* ---------- Reading size like a Notion page ---------- */
+[data-message-column] [data-markdown-preview] { font-size: 15px; line-height: 1.6; }
+
+/* ---------- Composer, like the Notion AI prompt box ---------- */
+form[data-promptbox] {
+  border-radius: 16px;
+  border: 1px solid color-mix(in oklch, var(--ink) 12%, var(--canvas));
+  background: var(--canvas);
+  box-shadow: 0 4px 12px rgba(15,15,15,.05), 0 1px 2px rgba(15,15,15,.04);
+}
+.dark form[data-promptbox] { box-shadow: 0 4px 12px rgba(0,0,0,.3); }
+/* Expanded box: roomier text area. The compact one-line box keeps bb's centring. */
+form[data-promptbox]:not([data-promptbox-compact]) [data-promptbox-editor-scroll] { padding: 14px 18px 6px; }
+form[data-promptbox]:not([data-promptbox-compact]) [data-promptbox-editor-content] { font-size: 15px; line-height: 1.6; }
+form[data-promptbox]:not([data-promptbox-compact]) [data-promptbox-action-row] { padding: 4px 10px 10px; }
+form[data-promptbox][data-promptbox-compact] [data-promptbox-editor-scroll] { padding-left: 18px; }
+form[data-promptbox][data-promptbox-compact] [data-promptbox-action-row] { padding-right: 8px; }
+[data-promptbox-action-row] button:not([data-promptbox-submit-action]) {
+  color: var(--muted-foreground);
+  background: transparent;
+  border-color: transparent;
+  border-radius: 8px;
+}
+[data-promptbox-action-row] button:not([data-promptbox-submit-action]):hover { background: var(--state-hover); color: var(--foreground); }
+/* Send control, every state. bb wraps send + "Send options" chevron in
+   [data-promptbox-send-menu]; style that wrapper as one Notion pill:
+   dark when sending is possible, light grey when not. Icon-only send is a
+   32px circle; a labelled send ("New thread") grows to fit its text. */
+[data-promptbox-send-menu] {
+  height: 32px; min-width: 32px;
+  border-radius: 999px !important;
+  overflow: hidden;
+  gap: 0 !important;
+  background: var(--foreground) !important;
+  color: var(--canvas) !important;
+  transition: background-color 120ms ease;
+}
+[data-promptbox-send-menu]:has(button[data-promptbox-submit-action]:disabled) {
+  background: color-mix(in oklch, var(--ink) 7%, var(--canvas)) !important;
+  color: var(--subtle-foreground) !important;
+}
+[data-promptbox-send-menu] button,
+[data-promptbox-send-menu] [data-promptbox-submit-disabled-reason] {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  border-radius: 999px !important;
+  height: 32px;
+}
+[data-promptbox-send-menu] button[data-promptbox-submit-action] { min-width: 32px; padding: 0 9px; opacity: 1 !important; }
+[data-promptbox-send-menu] button[data-promptbox-submit-action]:has([data-promptbox-full-label], [data-promptbox-compact-label]) {
+  padding: 0 12px; gap: 6px; font-size: 14px; font-weight: 500; width: auto;
+}
+/* Chevron sits inside the same pill, separated by spacing only */
+[data-promptbox-send-menu] button[aria-haspopup="menu"]:not([aria-hidden="true"]) { width: 24px; padding: 0 6px 0 0; margin-left: -4px; }
+[data-promptbox-send-menu] button[aria-haspopup="menu"] svg { opacity: .7 !important; }
+[data-promptbox-send-menu]:not(:has(button:disabled)) button:hover { background: rgba(255,255,255,.12) !important; }
+.dark [data-promptbox-send-menu]:not(:has(button:disabled)) button:hover { background: rgba(0,0,0,.12) !important; }
+/* A send button outside the menu wrapper (stop, steer) gets the same circle */
+button[data-promptbox-submit-action]:not([data-promptbox-send-menu] *) {
+  min-width: 32px; height: 32px; padding: 0 9px;
+  border-radius: 999px !important;
+  border: 0 !important;
+  background: var(--foreground) !important;
+  color: var(--canvas) !important;
+}
+button[data-promptbox-submit-action]:not([data-promptbox-send-menu] *):disabled {
+  background: color-mix(in oklch, var(--ink) 7%, var(--canvas)) !important;
+  color: var(--subtle-foreground) !important;
+  opacity: 1;
+}
+
+/* Small icon buttons inside the prompt box (collapse chevron and the like):
+   no fill, grey glyph, soft rounded hover — Notion's quiet icon button. */
+form[data-promptbox] :is([data-promptbox-input-region], [data-promptbox-main]) > button,
+form[data-promptbox] [data-promptbox-input-region] button,
+form[data-promptbox] button[aria-label="Collapse prompt box"],
+form[data-promptbox] button[aria-label="Expand prompt box"] {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--subtle-foreground);
+  width: 28px; height: 28px;
+  border-radius: 6px;
+}
+form[data-promptbox] [data-promptbox-input-region] button:hover,
+form[data-promptbox] button[aria-label="Collapse prompt box"]:hover,
+form[data-promptbox] button[aria-label="Expand prompt box"]:hover {
+  background: var(--state-hover) !important;
+  color: var(--foreground);
+}
+
+/* ---------- Context window card (hover on the context ring) ---------- */
+[data-radix-popper-content-wrapper] > [role="dialog"]:has(> [class*="context-window"]) {
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 12px !important;
+}
+[class*="@container/context-window"] {
+  width: 248px;
+  padding: 12px 14px !important;
+  border: 1px solid var(--border-hairline) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(15,15,15,.08), 0 1px 3px rgba(15,15,15,.06) !important;
+}
+.dark [class*="@container/context-window"] { box-shadow: 0 4px 16px rgba(0,0,0,.4), 0 1px 3px rgba(0,0,0,.3) !important; }
+[class*="@container/context-window"] > div { gap: 10px; }
+/* Title row: label in body colour, figure muted */
+[class*="@container/context-window"] > div > div:first-child { font-size: 14px; }
+[class*="@container/context-window"] > div > div:first-child > span:first-child { color: var(--foreground); font-weight: 500; }
+[class*="@container/context-window"] > div > div:first-child > span:last-child { font-size: 13px; font-weight: 400; }
+/* Progress: thin grey track, Notion blue fill */
+[class*="@container/context-window"] [class*="rounded-full"][class*="bg-border"] {
+  height: 4px;
+  background: color-mix(in oklch, var(--ink) 8%, var(--canvas));
+}
+[class*="@container/context-window"] [class*="rounded-full"][class*="bg-border"] > div {
+  background: var(--primary);
+  color: var(--primary);
+}
+/* Footer row: small and quiet */
+[class*="@container/context-window"] > div > div:last-child { font-size: 12px; color: var(--subtle-foreground); }
+
+/* Hover cards fade out quickly once they close (bb's default is 150ms). */
+[data-radix-popper-content-wrapper] > [role="dialog"][data-state="closed"] { animation-duration: 60ms !important; }
+
+/* ---------- Model picker (provider tabs, search, models, reasoning) ---------- */
+[data-radix-popper-content-wrapper] > [role="dialog"]:has([role="listbox"]) {
+  border: 1px solid var(--border-hairline) !important;
+  box-shadow: 0 4px 16px rgba(15,15,15,.08), 0 1px 3px rgba(15,15,15,.06) !important;
+  overflow: hidden;
+}
+.dark [data-radix-popper-content-wrapper] > [role="dialog"]:has([role="listbox"]) { box-shadow: 0 4px 16px rgba(0,0,0,.4), 0 1px 3px rgba(0,0,0,.3) !important; }
+/* Hairline dividers */
+[role="dialog"]:has([role="listbox"]) :is(.border-b, .border-t) { border-color: var(--border-hairline) !important; }
+/* Provider tabs: soft pill for the current one instead of an underline */
+[role="dialog"]:has([role="listbox"]) > div:first-child { background: transparent !important; padding: 6px 8px !important; gap: 2px; }
+[role="dialog"]:has([role="listbox"]) > div:first-child > button {
+  width: 28px; height: 28px; border-radius: 6px;
+  border-bottom-width: 0 !important;
+  color: var(--subtle-foreground);
+}
+[role="dialog"]:has([role="listbox"]) > div:first-child > button:hover { background: var(--state-hover); color: var(--foreground); }
+[role="dialog"]:has([role="listbox"]) > div:first-child > button:not([class*="border-transparent"]) {
+  background: var(--state-active); color: var(--foreground);
+}
+/* Search */
+[role="dialog"]:has([role="listbox"]) input[role="combobox"] { font-size: 14px; }
+/* Section labels */
+[role="dialog"]:has([role="listbox"]) .text-xs.font-medium.text-muted-foreground {
+  font-size: 12px; color: var(--subtle-foreground); font-weight: 500;
+}
+/* Model rows */
+[role="dialog"] [role="listbox"] > [role="option"],
+[role="dialog"] [role="listbox"] > button {
+  min-height: 30px; border-radius: 6px; font-size: 14px; padding-inline: 8px;
+}
+[role="dialog"] [role="listbox"] > [role="option"]:hover,
+[role="dialog"] [role="listbox"] > [role="option"][data-highlighted],
+[role="dialog"] [role="listbox"] > button:hover { background: var(--state-hover); }
+[role="dialog"] [role="listbox"] > [role="option"] svg { color: var(--foreground); }
+/* Reasoning: Notion segmented control */
+[role="dialog"] [role="radiogroup"] {
+  background: color-mix(in oklch, var(--ink) 6%, var(--canvas));
+  border-radius: 8px; padding: 2px; gap: 2px !important; margin-top: 6px;
+}
+[role="dialog"] [role="radiogroup"] > [role="radio"] {
+  flex: 1 1 auto; min-width: 0; height: 26px; padding: 0 7px; white-space: nowrap;
+  border-radius: 6px; font-size: 12.5px;
+  color: var(--muted-foreground); background: transparent; box-shadow: none;
+}
+[role="dialog"] [role="radiogroup"] > [role="radio"]:hover { color: var(--foreground); }
+[role="dialog"] [role="radiogroup"] > [role="radio"][data-state="on"] {
+  background: var(--canvas); color: var(--foreground); font-weight: 500;
+  box-shadow: 0 1px 2px rgba(15,15,15,.1), 0 0 0 1px rgba(15,15,15,.04);
+}
+.dark [role="dialog"] [role="radiogroup"] > [role="radio"][data-state="on"] { background: color-mix(in oklch, var(--ink) 14%, var(--canvas)); }
+/* Switch knob: white, like Notion's toggles */
+button[role="switch"] > span { background: #fff !important; box-shadow: 0 1px 2px rgba(15,15,15,.2); }
+
+
+/* ---------- Menus with described options (permission mode and the like) ----------
+   Notion option list: leading grey icon, 14px title, one quiet 12px description,
+   selection shown by a check only. */
+[data-radix-menu-content]:has([role="menuitem"] .leading-snug) { width: 320px; padding: 6px !important; }
+[data-radix-menu-content]:has([role="menuitem"] .leading-snug) > .text-xs.font-medium {
+  font-size: 12px; font-weight: 500; color: var(--subtle-foreground); padding: 6px 10px 4px;
+}
+[data-radix-menu-content] [role="menuitem"]:has(.leading-snug) {
+  padding: 8px 10px !important; min-height: 0; border-radius: 8px; align-items: flex-start; gap: 10px;
+}
+[data-radix-menu-content] [role="menuitem"]:has(.leading-snug) > span:first-child { gap: 10px; color: var(--foreground) !important; }
+[data-radix-menu-content] [role="menuitem"]:has(.leading-snug) .font-medium { font-size: 14px; font-weight: 500; line-height: 20px; }
+[data-radix-menu-content] [role="menuitem"] .leading-snug {
+  font-size: 12px; line-height: 16px; margin-top: 1px; color: var(--subtle-foreground) !important;
+}
+[data-radix-menu-content] [role="menuitem"]:has(.leading-snug) > svg { width: 16px; height: 16px; margin-top: 2px; color: var(--foreground); }
+/* Leading icons: edit, sparkles, unlock (masks, so they follow the text colour) */
+[data-radix-menu-content] [role="menuitem"]:has(.leading-snug) > span:first-child::before {
+  content: ""; flex: 0 0 18px; height: 18px; margin-top: 1px;
+  background: var(--muted-foreground);
+  -webkit-mask: var(--nt-ico) center / 18px no-repeat; mask: var(--nt-ico) center / 18px no-repeat;
+  --nt-ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3C/svg%3E");
+}
+[data-radix-menu-content] [role="menuitem"]:has(.leading-snug):nth-of-type(2) > span:first-child::before {
+  --nt-ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 20h9'/%3E%3Cpath d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z'/%3E%3C/svg%3E");
+}
+[data-radix-menu-content] [role="menuitem"]:has(.leading-snug):nth-of-type(3) > span:first-child::before {
+  --nt-ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9Z'/%3E%3Cpath d='M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8Z'/%3E%3C/svg%3E");
+}
+[data-radix-menu-content] [role="menuitem"]:has(.leading-snug):nth-of-type(4) > span:first-child::before {
+  --nt-ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='11' width='16' height='10' rx='2'/%3E%3Cpath d='M8 11V7a4 4 0 0 1 7.5-2'/%3E%3C/svg%3E");
+}
+/* The risky option keeps its warning, on the icon only */
+[data-radix-menu-content] [role="menuitem"] > span.text-warning-text::before { background: var(--warning) !important; }
+
+/* ---------- Right panel, like Notion's side peek ---------- */
+aside:has(button[aria-label^="Hide right panel"]),
+aside:has(button[aria-label^="Hide right panel"]) .bg-sidebar {
+  background: var(--canvas) !important;
+}
+aside:has(button[aria-label^="Hide right panel"]) { border-left: 1px solid var(--border-hairline) !important; }
+/* Tab strip: no fill, quiet icon buttons, current tab on a soft pill */
+aside div.shrink-0:has(> * button[aria-label^="Hide right panel"]),
+aside div.shrink-0:has(button[aria-label^="Hide right panel"]) {
+  background: transparent !important;
+  border-bottom: 1px solid var(--border-hairline);
+}
+aside div.shrink-0:has(button[aria-label^="Hide right panel"]) button {
+  border-radius: 6px; color: var(--subtle-foreground); background: transparent;
+}
+aside div.shrink-0:has(button[aria-label^="Hide right panel"]) button:hover { background: var(--state-hover); color: var(--foreground); }
+aside div.shrink-0:has(button[aria-label^="Hide right panel"]) :is(button[aria-selected="true"], button[data-state="active"], button[aria-pressed="true"], [role="tab"][aria-selected="true"]) {
+  background: var(--state-active) !important; color: var(--foreground);
+}
+/* Properties: Notion page-property rows */
+dl [class*="grid-cols-[var(--detail-label-width"] {
+  --detail-label-width: 132px;
+  min-height: 34px; padding: 0 6px !important; margin: 0 -6px;
+  border-radius: 6px; column-gap: 8px;
+}
+dl [class*="grid-cols-[var(--detail-label-width"]:hover { background: var(--state-hover); }
+dl [class*="grid-cols-[var(--detail-label-width"] > dt { font-size: 14px; line-height: 20px; color: var(--subtle-foreground); }
+dl [class*="grid-cols-[var(--detail-label-width"] > dt > span { gap: 8px; }
+dl [class*="grid-cols-[var(--detail-label-width"] > dt svg { width: 16px; height: 16px; }
+dl [class*="grid-cols-[var(--detail-label-width"] > dd,
+dl [class*="grid-cols-[var(--detail-label-width"] > dd :is(span, button) { font-size: 14px; line-height: 20px; }
+dl:has([class*="grid-cols-[var(--detail-label-width"]) { gap: 2px !important; padding: 12px 16px !important; }
+/* Sections (Thread storage, ...): Notion toggle heading */
+dl [data-info-section] { border-color: var(--border-hairline) !important; padding-top: 12px; }
+dl [data-info-section] h3 { font-size: 14px; font-weight: 600; color: var(--foreground); }
+dl [data-info-section] h3 .rounded-full { background: var(--state-hover); color: var(--subtle-foreground); font-size: 11px; }
+dl [data-info-section] li { height: 30px; border-radius: 6px; padding-inline: 6px; }
+dl [data-info-section] li:hover { background: var(--state-hover); }
+dl [data-info-section] li button, dl [data-info-section] li .text-subtle-foreground { font-size: 14px; color: var(--foreground); }
+
+/* Check marks in menus and pickers: Notion's small, bolder check, centred on the row. */
+:is([data-radix-menu-content], [role="dialog"], [data-radix-select-content]) svg[data-icon="Check"] {
+  width: 14px !important; height: 14px !important;
+  stroke-width: 2.4; color: var(--foreground);
+  align-self: center !important; margin-top: 0 !important;
+}
+[data-radix-menu-content] [role="menuitem"]:has(.leading-snug) > svg[data-icon="Check"] { margin-right: 2px; }
+:is([data-radix-menu-content], [role="dialog"], [data-radix-select-content]) svg[data-icon="Check"] * { stroke-width: 2.6 !important; }
+
+/* ---------- New tab page (right panel, ⌘T): actions as big Notion cards ----------
+   One column on purpose: bb reorders these by dragging along a vertical list,
+   so a multi-column grid would break drag-and-drop. */
+div.flex-col:has(> div > div > button[data-panel-new-tab-item]) {
+  gap: 6px !important;
+  padding: 2px 0 8px;
+}
+div.flex-col:has(> div > div > button[data-panel-new-tab-item]) > div > div.group {
+  position: relative;
+  min-height: 56px;
+  padding: 10px 12px !important;
+  border: 1px solid var(--border-hairline);
+  border-radius: 10px !important;
+  background: color-mix(in oklch, var(--ink) 2.5%, var(--canvas));
+  transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+div.flex-col:has(> div > div > button[data-panel-new-tab-item]) > div > div.group:hover {
+  background: var(--state-hover);
+  border-color: color-mix(in oklch, var(--ink) 14%, var(--canvas));
+  box-shadow: 0 1px 3px rgba(15,15,15,.06);
+}
+div.flex-col:has(> div > div > button[data-panel-new-tab-item]) > div > div.group:focus-within { outline: 2px solid var(--ring); outline-offset: 1px; }
+button[data-panel-new-tab-item] { gap: 12px !important; align-items: center !important; }
+/* Icon in a soft rounded square, like Notion page icons in gallery cards */
+button[data-panel-new-tab-item] > :first-child {
+  width: 34px !important; height: 34px !important; min-width: 34px; min-height: 34px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+  background: color-mix(in oklch, var(--ink) 6%, var(--canvas));
+}
+button[data-panel-new-tab-item] > :first-child svg,
+button[data-panel-new-tab-item] > :first-child [data-icon-root] { width: 20px !important; height: 20px !important; stroke-width: 1.7; color: var(--foreground); }
+button[data-panel-new-tab-item] > span:last-child { font-size: 15px; font-weight: 500; line-height: 20px; color: var(--foreground); }
+/* Shortcut hint or extra control: quiet, at the right */
+div.flex-col:has(> div > div > button[data-panel-new-tab-item]) > div > div.group > :not(button) { font-size: 12px; color: var(--subtle-foreground); }
+/* Section labels on the page (Actions, Recent) */
+section:has(button[data-panel-new-tab-item]) > div:first-child { font-size: 12px; font-weight: 500; color: var(--subtle-foreground); padding-bottom: 8px; }
